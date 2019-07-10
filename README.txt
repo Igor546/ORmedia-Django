@@ -17,3 +17,9 @@
     - python manage.py startapp app (Пишем в консоли)
     - Добавляем "app" в "setting.py" в раздел "INSTALLED_APPS"
 6. python manage.py collectstatic - для подключения bootstrap в Django
+
+Урок 5:
+    - После изменения "models.py" прописываем:
+        - python manage.py makemigrations
+        - python manage.py migrate
+
