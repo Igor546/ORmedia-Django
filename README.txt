@@ -16,3 +16,4 @@
 5. Создание приложения "app" в среде Django:
     - python manage.py startapp app (Пишем в консоли)
     - Добавляем "app" в "setting.py" в раздел "INSTALLED_APPS"
+6. python manage.py collectstatic - для подключения bootstrap в Django
