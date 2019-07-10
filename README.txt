@@ -11,5 +11,8 @@
 
 1. django-admin.py startproject djangoshop - Разворачивание папки проекта (вводить в виртуальном окружении)
 2. python manage.py runserver - Запустить проект Django (можно настроить запуск по кнопке PyCharm)
-3. python manage.py migrate - Решить ошибку об миграциях
+3. python manage.py migrate - Решить ошибку об миграциях (Добавить миграции)
 4. python manage.py createsuperuser - Создать суперпользователя
+5. Создание приложения "app" в среде Django:
+    - python manage.py startapp app (Пишем в консоли)
+    - Добавляем "app" в "setting.py" в раздел "INSTALLED_APPS"
