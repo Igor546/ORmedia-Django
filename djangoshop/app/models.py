@@ -23,7 +23,7 @@ class Brand(models.Model):
         return self.name
 
 
-# Сохранения изображений
+# Сохранения изображений (работа с именами)
 def image_folder(instance, filename):
     filename = instance.slug + '.' + filename.split('.')[1]
     return "{0}/{1}".format(instance.slug, filename)  # Имя папки / Имя файла
