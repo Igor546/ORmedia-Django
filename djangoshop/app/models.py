@@ -23,6 +23,12 @@ class Brand(models.Model):
         return self.name
 
 
+# Сохранения изображений
+def image_folder(instance, filename):
+    filename = instance.slug + '.' + filename.split('.')[1]
+    return "{0}/{1}".format(instance.slug, filename)  # Имя папки / Имя файла
+
+
 # Товар
 class Product(models.Model):
     # ForeignKey. Внешний-ключ (у одного товара может быть только одна категория/бренд)
@@ -31,7 +37,7 @@ class Product(models.Model):
     title = models.CharField(max_length=120)
     slug = models.SlugField()
     description = models.TextField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to=image_folder)
     price = models.DecimalField(max_digits=9, decimal_places=2)  # (Всего цифр <=9, после запятой 2)
     available = models.BooleanField(default=True)  # Товар Активен/Неактивен
 
