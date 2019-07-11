@@ -1,5 +1,7 @@
 from django.db import models
-
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
+from transliterate import translit
 
 # python manage.py makemigrations
 # python manage.py migrate
@@ -7,11 +9,22 @@ from django.db import models
 # Категория товара
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)  # blank=True - убрать необходимость заполнения формы
 
     # Чтобы в админке имя категории было не "Category object (1)" , а "self.name" (Смартфоны)
     def __str__(self):
         return self.name
+
+
+# Преобразует "name" в "slug"
+def pre_save_category_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        # Преобразуем кирилицу в транслит, а транслит в slag-формат
+        slug = slugify(translit(str(instance.name), reversed=True))
+        instance.slug = slug
+
+
+pre_save.connect(pre_save_category_slug, sender=Category)
 
 
 # Бренд товара
