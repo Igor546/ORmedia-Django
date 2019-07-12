@@ -1,5 +1,4 @@
 from django.shortcuts import render
 
-
-def hello_world(request):
+def base_view(request):
     return render(request, 'base.html', {})
