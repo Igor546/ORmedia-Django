@@ -55,7 +55,6 @@
 <div class="container">
     {% block content %}
     <div class="row">
-
         <div class="col-lg-3">
 
             <h1 class="my-4">Shop Name</h1>
@@ -102,7 +101,8 @@
                 {% for product in products%}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="{{ product.image.url }}" alt="" style="width: 100%; height: 260px;"></a>
+                        <a href="#"><img class="card-img-top" src="{{ product.image.url }}" alt=""
+                                         style="width: 100%; height: 260px;"></a>
                         <div class="card-body">
                             <h4 class="card-title">
                                 <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
@@ -122,7 +122,6 @@
 
         </div>
         <!-- /.col-lg-9 -->
-
     </div>
     <!-- /.row -->
     {% endblock content %}

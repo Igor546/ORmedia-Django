@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="row">
+    <div class="col-sm-4">
+        <img src="{{ product.image.url }}" style="width:80%; height: 250px;">
+    </div>
+    <div class="col-sm-8">
+        <br>
+        <h3 class="text-center">{{ product.title }}</h3>
+        <p>{{ product.description }}</p>
+        <hr>
+        <p>Цена: <strong>{{ product.price }}</strong></p>
+        <a href="#"><button class="btn btn-danger">Добавить в корзину</button></a>
+    </div>
+</div>
 {% endblock content %}
