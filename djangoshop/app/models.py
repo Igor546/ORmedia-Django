@@ -3,6 +3,7 @@ from django.db.models.signals import pre_save
 from django.utils.text import slugify
 from transliterate import translit
 
+
 # python manage.py makemigrations
 # python manage.py migrate
 
@@ -42,6 +43,12 @@ def image_folder(instance, filename):
     return "{0}/{1}".format(instance.slug, filename)  # Имя папки / Имя файла
 
 
+# Переопределение метода all для Product.objects (который используем в views)
+class ProductManager(models.Manager):
+    def all(self, *args, **kwards):
+        return super(ProductManager, self).get_queryset().filter(available=True)
+
+
 # Товар
 class Product(models.Model):
     # ForeignKey. Внешний-ключ (у одного товара может быть только одна категория/бренд)
@@ -53,6 +60,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to=image_folder)
     price = models.DecimalField(max_digits=9, decimal_places=2)  # (Всего цифр <=9, после запятой 2)
     available = models.BooleanField(default=True)  # Товар Активен/Неактивен
+    objects = ProductManager()
 
     def __str__(self):
         return self.title
