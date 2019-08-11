@@ -1,8 +1,8 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
+from django.urls import reverse
 from transliterate import translit
-
 
 # python manage.py makemigrations
 # python manage.py migrate
@@ -15,6 +15,10 @@ class Category(models.Model):
     # Чтобы в админке имя категории было не "Category object (1)" , а "self.name" (Смартфоны)
     def __str__(self):
         return self.name
+
+    # Возврат url для категорий (используем в base.html)
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'category_slug': self.slug})
 
 
 # Преобразует "name" в "slug"
@@ -32,7 +36,7 @@ pre_save.connect(pre_save_category_slug, sender=Category)
 class Brand(models.Model):
     name = models.CharField(max_length=100)
 
-    # Чтобы в админке имя категории было не "Category object (1)" , а "self.name" (Смартфоны)
+    # Чтобы в админке имя бренда было не "Brand object (1)" , а "self.name"
     def __str__(self):
         return self.name
 
@@ -64,3 +68,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    # Возврат url для продуктов (используем в base.html)
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={'product_slug': self.slug})
