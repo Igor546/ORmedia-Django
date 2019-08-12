@@ -32,20 +32,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
+                {% if not request.get_full_path == '/' %}
+                <li class="nav-item active dropdown">
+                    <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Категории
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        {% for category in categories %}
+                        <a class="dropdown-item" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                        {% endfor %}
+                    </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

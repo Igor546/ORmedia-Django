@@ -15,8 +15,10 @@ def base_view(request):
 
 # Просмотр по категориям
 def product_view(request, product_slug):
+    categories = Category.objects.all()
     product = Product.objects.get(slug=product_slug)
     context = {
+        'categories': categories,
         'product': product
     }
     return render(request, 'product.html', context)
