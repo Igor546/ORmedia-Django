@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 from transliterate import translit
 
+
 # python manage.py makemigrations
 # python manage.py migrate
 
@@ -49,8 +50,13 @@ def image_folder(instance, filename):
 
 # Переопределение метода all для Product.objects (который используем в views)
 class ProductManager(models.Manager):
+    # Возвращает список продуктов имеющих атрибут available=True
     def all(self, *args, **kwards):
         return super(ProductManager, self).get_queryset().filter(available=True)
+
+    # Возвращает список продуктов имеющих категорию ноутбук
+    def notebooks(self, *args, **kwards):
+        return super(ProductManager, self).get_queryset().filter(category=Category.objects.all()[1])
 
 
 # Товар

@@ -6,9 +6,11 @@ from app.models import Category, Product
 def base_view(request):
     categories = Category.objects.all()
     products = Product.objects.all()
+    notebooks = Product.objects.notebooks()
     context = {
         'categories': categories,
-        'products': products
+        'products': products,
+        'notebooks': notebooks
     }
     return render(request, 'base.html', context)  # Отправляем в base.html
 
@@ -26,9 +28,11 @@ def product_view(request, product_slug):
 
 # Просмотр по продуктам
 def category_view(request, category_slug):
+    categories = Category.objects.all()  # Дописал сам
     category = Category.objects.get(slug=category_slug)
     products_of_category = Product.objects.filter(category=category)
     context = {
+        'categories': categories,  # Дописал сам
         'category': category,
         'products_of_category': products_of_category
     }
