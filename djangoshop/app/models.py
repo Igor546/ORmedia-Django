@@ -78,3 +78,22 @@ class Product(models.Model):
     # Возврат url для продуктов (используем в base.html)
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'product_slug': self.slug})
+
+
+# Промежуточный продукт (для корзины)
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Продукт (
+    count = models.PositiveIntegerField(default=1)  # Количество
+    item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)  # Для изменения количества
+
+    def __str__(self):
+        return "Cart item for product {}".format(self.product.title)
+
+
+# Модель корзины
+class Cart(models.Model):
+    items = models.ManyToManyField(CartItem)  # Можем в корзину добавить множество CartItem (связь Многие ко многим)
+    all_price = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return str(self.id)
