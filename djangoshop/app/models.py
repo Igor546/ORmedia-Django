@@ -99,3 +99,19 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def add_to_cart(self, product_slug):
+        cart = self
+        product = Product.objects.get(slug=product_slug)
+        new_item, _ = CartItem.objects.get_or_create(product=product, price=product.price)
+        if new_item not in cart.items.all():
+            cart.items.add(new_item)
+            cart.save()
+
+    def del_to_cart(self, product_slug):
+        cart = self
+        product = Product.objects.get(slug=product_slug)
+        for cart_item in cart.items.all():
+            if cart_item.product == product:
+                cart.items.remove(cart_item)
+                cart.save()
