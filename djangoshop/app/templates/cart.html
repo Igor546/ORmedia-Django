@@ -10,12 +10,14 @@
         <td class="text-center"><strong>Товар</strong></td>
         <td class="text-center"><strong>Количество</strong></td>
         <td class="text-center"><strong>Цена</strong></td>
+        <td class="text-center"><strong>Действие</strong></td>
     </tr>
     {% for item in cart.items.all %}
     <tr>
         <td class="text-center">{{ item.product.title }}</td>
         <td class="text-center">{{ item.count }}</td>
         <td class="text-center">{{ item.price }}</td>
+        <td class="text-center"><a href='{% url "del_to_cart" product_slug=item.product.slug %}'><button class="btn btn-danger">Удалить из корзины</button></a></td>
     </tr>
     {% endfor %}
 </table>

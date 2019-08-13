@@ -5,10 +5,20 @@ from django.http import HttpResponseRedirect
 
 # Главная
 def base_view(request):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
     categories = Category.objects.all()
     products = Product.objects.all()
     notebooks = Product.objects.notebooks()
-    cart = Cart.objects.first()
     context = {
         'categories': categories,
         'products': products,
@@ -20,9 +30,19 @@ def base_view(request):
 
 # Просмотр по категориям
 def product_view(request, product_slug):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
     categories = Category.objects.all()
     product = Product.objects.get(slug=product_slug)
-    cart = Cart.objects.first()
     context = {
         'categories': categories,
         'product': product,
@@ -33,10 +53,20 @@ def product_view(request, product_slug):
 
 # Просмотр по продуктам
 def category_view(request, category_slug):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
     categories = Category.objects.all()  # Дописал сам
     category = Category.objects.get(slug=category_slug)
     products_of_category = Product.objects.filter(category=category)
-    cart = Cart.objects.first()
     context = {
         'categories': categories,  # Дописал сам
         'category': category,
@@ -48,8 +78,18 @@ def category_view(request, category_slug):
 
 # Корзина
 def cart_view(request):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
     categories = Category.objects.all()  # Дописал сам
-    cart = Cart.objects.first()
     context = {
         'categories': categories,  # Дописал сам
         'cart': cart
@@ -60,10 +100,40 @@ def cart_view(request):
 # Как я понял этот метод мы регистрируем в urls под именем "add_to_cart" и потом используем в HTML "product.html"
 # и должны будем передать аргумент "product_slug"
 def add_to_cart_view(request, product_slug):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
     product = Product.objects.get(slug=product_slug)
     new_item, _ = CartItem.objects.get_or_create(product=product, price=product.price)
-    cart = Cart.objects.first()
     if new_item not in cart.items.all():
         cart.items.add(new_item)
         cart.save()
+    return HttpResponseRedirect('/cart/')
+
+
+def del_to_cart_view(request, product_slug):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
+    product = Product.objects.get(slug=product_slug)
+    for cart_item in cart.items.all():
+        if cart_item.product == product:
+            cart.items.remove(cart_item)
+            cart.save()
     return HttpResponseRedirect('/cart/')
