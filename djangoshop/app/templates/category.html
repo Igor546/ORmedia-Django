@@ -22,7 +22,7 @@
                     <p class="card-text">{{ product.description }}</p>
                 </div>
                 <div class="card-title">
-                    <p class="text-center"><a href="#"><button class="btn btn-danger">Добавить в корзину</button></a></p>
+                    <p class="text-center"><a href='{% url "add_to_cart" product_slug=product.slug %}'><button class="btn btn-danger">Добавить в корзину</button></a></p>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>

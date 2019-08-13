@@ -32,7 +32,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
+            <ul class="nav navbar-nav">
                 {% if not request.get_full_path == '/' %}
                 <li class="nav-item active dropdown">
                     <a class="dropdown-toggle nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,6 +46,10 @@
                 </li>
                 {% endif %}
             </ul>
+            <ul class="nav navbar-nav ml-auto ml-auto">
+                <li class="nav-item"><a class="nav-link" href='{% url "cart" %}'>Корзина <span class="badge">{{ cart.items.count }}</span></a></li>
+            </ul>
+
         </div>
     </div>
 </nav>
@@ -82,11 +86,13 @@
                     <div class="carousel-item active">
                         <img class="d-block img-fluid" src="{{ notebook.image.url }}" alt="" style="margin-left: auto; margin-right: auto; height: 260px;">
                         <p class="text-center"><a href="{{ notebook.get_absolute_url }}"><button class="btn btn-info btn-sm">{{ notebook.title }}</button></a></p>
+                        <br>
                     </div>
                     {% else %}
                     <div class="carousel-item">
                         <img class="d-block img-fluid" src="{{ notebook.image.url }}" alt="" style="margin-left: auto; margin-right: auto; height: 260px;">
                         <p class="text-center"><a href="{{ notebook.get_absolute_url }}"><button class="btn btn-info btn-sm">{{ notebook.title }}</button></a></p>
+                        <br>
                     </div>
                     {% endif %}
                     {% endfor %}

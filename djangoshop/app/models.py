@@ -5,6 +5,7 @@ from django.urls import reverse
 from transliterate import translit
 
 
+# ВСЕГДА ПРИ ИЗМЕНЕНИИ/СОЗДАНИИ МОДЕЛИ после ПРОПИСЫВАЕМ ЭТО:
 # python manage.py makemigrations
 # python manage.py migrate
 
@@ -82,9 +83,9 @@ class Product(models.Model):
 
 # Промежуточный продукт (для корзины)
 class CartItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Продукт (
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)  # Продукт
     count = models.PositiveIntegerField(default=1)  # Количество
-    item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)  # Для изменения количества
+    price = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)  # Для изменения количества
 
     def __str__(self):
         return "Cart item for product {}".format(self.product.title)
@@ -92,7 +93,8 @@ class CartItem(models.Model):
 
 # Модель корзины
 class Cart(models.Model):
-    items = models.ManyToManyField(CartItem)  # Можем в корзину добавить множество CartItem (связь Многие ко многим)
+    # Можем в корзину добавить множество CartItem (связь Многие ко многим)
+    items = models.ManyToManyField(CartItem, blank=True)  # blank=True - убрать необходимость заполнения формы
     all_price = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
     def __str__(self):

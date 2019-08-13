@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<br>
+<h3 class="text-center">Ваша корзина</h3>
+<br>
+<table class="table">
+    <tr>
+        <td class="text-center"><strong>Товар</strong></td>
+        <td class="text-center"><strong>Количество</strong></td>
+        <td class="text-center"><strong>Цена</strong></td>
+    </tr>
+    {% for item in cart.items.all %}
+    <tr>
+        <td class="text-center">{{ item.product.title }}</td>
+        <td class="text-center">{{ item.count }}</td>
+        <td class="text-center">{{ item.price }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}
