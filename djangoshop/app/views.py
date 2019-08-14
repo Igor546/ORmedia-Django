@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from app.models import Category, Product, CartItem, Cart
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
 
@@ -100,7 +100,7 @@ def cart_view(request):
 
 # Как я понял этот метод мы регистрируем в urls под именем "add_to_cart" и потом используем в HTML "product.html"
 # и должны будем передать аргумент "product_slug"
-def add_to_cart_view(request, product_slug):
+def add_to_cart_view(request):
     # Работа с корзиной
     try:
         cart_id = request.session['cart_id']
@@ -112,9 +112,10 @@ def add_to_cart_view(request, product_slug):
         cart_id = cart.id
         request.session['cart_id'] = cart_id
         cart = Cart.objects.get(id=cart_id)
+    product_slug = request.GET.get('product_slug')
     product = Product.objects.get(slug=product_slug)
     cart.add_to_cart(product.slug)
-    return HttpResponseRedirect(reverse('cart'))
+    return JsonResponse({"cart_count": cart.items.count()})
 
 
 def del_to_cart_view(request, product_slug):
@@ -131,4 +132,4 @@ def del_to_cart_view(request, product_slug):
         cart = Cart.objects.get(id=cart_id)
     product = Product.objects.get(slug=product_slug)
     cart.del_to_cart(product.slug)
-    return HttpResponseRedirect(reverse('cart'))
+    return JsonResponse({"cart_count": cart.items.count()})

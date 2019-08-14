@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="row">
     <div class="col-sm-4">
@@ -11,9 +10,28 @@
         <p>{{ product.description }}</p>
         <hr>
         <p>Цена: <strong>{{ product.price }}</strong></p>
-        <a href='{% url "add_to_cart" product_slug=product.slug %}'>
+        <a href='#' class="add_to_cart" data-slug="{{ product.slug }}">
             <button class="btn btn-danger">Добавить в корзину</button>
         </a>
     </div>
 </div>
+<script>
+$(document).ready(function(){
+    $('.add_to_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        data = {
+            product_slug: product_slug
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "add_to_cart" %}',
+            data: data,
+            success: function(data){
+                $("#cart_count").html(data.cart_count)
+            }
+        })
+    })
+})
+</script>
 {% endblock content %}

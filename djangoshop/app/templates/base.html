@@ -19,6 +19,10 @@
     <!-- Custom CSS -->
     <link rel='stylesheet' href='{% static "css/shop-homepage.css" %}'>
 
+    <!-- Bootstrap core JavaScript -->
+    <script src='{% static "js/jquery.min.js" %}'></script>
+    <script src='{% static "js/bootstrap.bundle.min.js" %}'></script>
+
 </head>
 
 <body>
@@ -47,7 +51,7 @@
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav ml-auto ml-auto">
-                <li class="nav-item"><a class="nav-link" href='{% url "cart" %}'>Корзина <span class="badge">{{ cart.items.count }}</span></a></li>
+                <li class="nav-item"><a class="nav-link" href='{% url "cart" %}'>Корзина <span class="badge" id="cart_count">{{ cart.items.count }}</span></a></li>
             </ul>
 
         </div>
@@ -147,10 +151,6 @@
     </div>
     <!-- /.container -->
 </footer>
-
-<!-- Bootstrap core JavaScript -->
-<script src='{% static "js/jquery.min.js" %}'></script>
-<script src='{% static "js/bootstrap.bundle.min.js" %}'></script>
 
 </body>
 
