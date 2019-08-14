@@ -115,7 +115,13 @@ def add_to_cart_view(request):
     product_slug = request.GET.get('product_slug')
     product = Product.objects.get(slug=product_slug)
     cart.add_to_cart(product.slug)
-    return JsonResponse({"cart_count": cart.items.count()})
+    # Подсчет all_price
+    new_all_price = 0.00
+    for item in cart.items.all():
+        new_all_price += float(item.price)
+    cart.all_price = new_all_price
+    cart.save()
+    return JsonResponse({"cart_count": cart.items.count(), "all_price": cart.all_price})
 
 
 # Вьюшка удаления товаров из корзины
@@ -134,7 +140,13 @@ def del_to_cart_view(request):
     product_slug = request.GET.get('product_slug')
     product = Product.objects.get(slug=product_slug)
     cart.del_to_cart(product.slug)
-    return JsonResponse({"cart_count": cart.items.count()})
+    # Подсчет all_price
+    new_all_price = 0.00
+    for item in cart.items.all():
+        new_all_price += float(item.price)
+    cart.all_price = new_all_price
+    cart.save()
+    return JsonResponse({"cart_count": cart.items.count(), "all_price": cart.all_price})
 
 
 # Вьюшка изменения колличества товара в корзине
@@ -158,4 +170,10 @@ def change_item_count(request):
     cart_item.count = int(count)
     cart_item.price = int(count) * Decimal(cart_item.product.price)
     cart_item.save()
-    return JsonResponse({"count": "cart.items.count()", "price": cart_item.price})
+    # Подсчет all_price
+    new_all_price = 0.00
+    for item in cart.items.all():
+        new_all_price += float(item.price)
+    cart.all_price = new_all_price
+    cart.save()
+    return JsonResponse({"count": cart.items.count(), "price": cart_item.price, "all_price": cart.all_price})

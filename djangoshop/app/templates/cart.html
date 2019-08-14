@@ -24,6 +24,12 @@
         <td class="text-center"><a href='#' class="del_to_cart" data-slug="{{ item.product.slug }}" data-id="{{ item.product.id }}"><button class="btn btn-danger">Удалить из корзины</button></a></td>
     </tr>
     {% endfor %}
+    <tr>
+        <td></td>
+        <td></td>
+        <td class="text-center"><strong>Итого:</strong></td>
+        <td class="text-center" id="cart-all-price"><strong>{{ cart.all_price }} руб.</strong></td>
+    </tr>
 </table>
 <script>
 $(document).ready(function(){
@@ -41,6 +47,7 @@ $(document).ready(function(){
             success: function(data){
                 $("#cart_count").html(data.cart_count)
                 $('.cart-item-'+item_product_id).css('display', 'none')
+                $('#cart-all-price').html('<strong>' + parseFloat(data.all_price).toFixed(2) + ' руб.' + '</strong>')
             }
         })
     })
@@ -61,6 +68,7 @@ $(document).ready(function(){
             data: data,
             success: function(data){
                 $('#cart-price-'+item_id).html(parseFloat(data.price).toFixed(2) + ' руб.')
+                $('#cart-all-price').html('<strong>' + parseFloat(data.all_price).toFixed(2) + ' руб.' + '</strong>')
             }
         })
     })
