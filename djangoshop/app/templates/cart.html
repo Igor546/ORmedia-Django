@@ -15,8 +15,12 @@
     {% for item in cart.items.all %}
     <tr class="cart-item-{{ item.product.id }}">
         <td class="text-center">{{ item.product.title }}</td>
-        <td class="text-center">{{ item.count }}</td>
-        <td class="text-center">{{ item.price }}</td>
+        <td class="text-center">
+            <form action="" method="GET">
+                <input class="form-control cart-item-count" data-id="{{ item.id }}" style="margin: 0 auto; width: 40%;" type="number" name="count" value="{{ item.count }}" min="1">
+            </form>
+        </td>
+        <td class="text-center" id="cart-price-{{ item.id }}">{{ item.price }} руб.</td>
         <td class="text-center"><a href='#' class="del_to_cart" data-slug="{{ item.product.slug }}" data-id="{{ item.product.id }}"><button class="btn btn-danger">Удалить из корзины</button></a></td>
     </tr>
     {% endfor %}
@@ -37,6 +41,26 @@ $(document).ready(function(){
             success: function(data){
                 $("#cart_count").html(data.cart_count)
                 $('.cart-item-'+item_product_id).css('display', 'none')
+            }
+        })
+    })
+})
+</script>
+<script>
+$(document).ready(function(){
+    $('.cart-item-count').on('click', function(){
+        count = $(this).val()
+        item_id = $(this).attr('data-id')
+        data = {
+            count: count,
+            item_id: item_id
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "change_item_count" %}',
+            data: data,
+            success: function(data){
+                $('#cart-price-'+item_id).html(parseFloat(data.price).toFixed(2) + ' руб.')
             }
         })
     })

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from app.models import Category, Product, CartItem, Cart
 from django.http import HttpResponseRedirect, JsonResponse
-from django.urls import reverse
+from decimal import Decimal
 
 
 # Главная
@@ -118,6 +118,7 @@ def add_to_cart_view(request):
     return JsonResponse({"cart_count": cart.items.count()})
 
 
+# Вьюшка удаления товаров из корзины
 def del_to_cart_view(request):
     # Работа с корзиной
     try:
@@ -134,3 +135,27 @@ def del_to_cart_view(request):
     product = Product.objects.get(slug=product_slug)
     cart.del_to_cart(product.slug)
     return JsonResponse({"cart_count": cart.items.count()})
+
+
+# Вьюшка изменения колличества товара в корзине
+def change_item_count(request):
+    # Работа с корзиной
+    try:
+        cart_id = request.session['cart_id']
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    except:
+        cart = Cart()
+        cart.save()
+        cart_id = cart.id
+        request.session['cart_id'] = cart_id
+        cart = Cart.objects.get(id=cart_id)
+    # Получили из cart.html
+    count = request.GET.get('count')
+    item_id = request.GET.get('item_id')
+    # Изменяем колличество в БД
+    cart_item = CartItem.objects.get(id=int(item_id))
+    cart_item.count = int(count)
+    cart_item.price = int(count) * Decimal(cart_item.product.price)
+    cart_item.save()
+    return JsonResponse({"count": "cart.items.count()", "price": cart_item.price})
