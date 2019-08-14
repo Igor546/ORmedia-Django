@@ -118,7 +118,7 @@ def add_to_cart_view(request):
     return JsonResponse({"cart_count": cart.items.count()})
 
 
-def del_to_cart_view(request, product_slug):
+def del_to_cart_view(request):
     # Работа с корзиной
     try:
         cart_id = request.session['cart_id']
@@ -130,6 +130,7 @@ def del_to_cart_view(request, product_slug):
         cart_id = cart.id
         request.session['cart_id'] = cart_id
         cart = Cart.objects.get(id=cart_id)
+    product_slug = request.GET.get('product_slug')
     product = Product.objects.get(slug=product_slug)
     cart.del_to_cart(product.slug)
     return JsonResponse({"cart_count": cart.items.count()})

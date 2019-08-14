@@ -13,13 +13,33 @@
         <td class="text-center"><strong>Действие</strong></td>
     </tr>
     {% for item in cart.items.all %}
-    <tr>
+    <tr class="cart-item-{{ item.product.id }}">
         <td class="text-center">{{ item.product.title }}</td>
         <td class="text-center">{{ item.count }}</td>
         <td class="text-center">{{ item.price }}</td>
-        <td class="text-center"><a href='{% url "del_to_cart" %}'><button class="btn btn-danger">Удалить из корзины</button></a></td>
+        <td class="text-center"><a href='#' class="del_to_cart" data-slug="{{ item.product.slug }}" data-id="{{ item.product.id }}"><button class="btn btn-danger">Удалить из корзины</button></a></td>
     </tr>
     {% endfor %}
 </table>
-
+<script>
+$(document).ready(function(){
+    $('.del_to_cart').on('click', function(e){
+        e.preventDefault()
+        product_slug = $(this).attr('data-slug')
+        item_product_id = $(this).attr('data-id')
+        data = {
+            product_slug: product_slug
+        }
+        $.ajax({
+            type: "GET",
+            url: '{% url "del_to_cart" %}',
+            data: data,
+            success: function(data){
+                $("#cart_count").html(data.cart_count)
+                $('.cart-item-'+item_product_id).css('display', 'none')
+            }
+        })
+    })
+})
+</script>
 {% endblock content %}
